@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify-like Song List</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #282828;
+      color: #fff;
+    }
+
+    .song-list {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #121212;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      overflow-y: auto;
+      max-height: 400px; /* Set a maximum height for scrollability */
+    }
+
+    .song {
+      display: flex;
+      align-items: center; /* Align items vertically in the center */
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .song:last-child {
+      border-bottom: none;
+    }
+
+    .select-checkbox {
+      margin-right: 10px;
+    }
+
+    .song-title {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .song-details {
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    #saveSelectionBtn {
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="song-list">
+    <form id="songForm">
+      {{range .}}
+        <div class="song">
+          <input type="checkbox" class="select-checkbox" name="selectedSongs" value="{{.URI}}" checked>
+          <div>
+            <div class="song-title">
+              <a href="{{.PlaybackURI}}" target="_blank" style="color: white;">{{.Title}}</a>
+            </div>
+            <div class="song-details">{{.Artist}} | {{.Album}} | Duration {{.Duration}}</div>
+          </div>
+        </div>
+      {{end}}
+      <button type="button" id="saveSelectionBtn" onclick="saveSelection()">Save Selection</button>
+    </form>
+  </div>
+
+  <script>
+    function saveSelection() {
+      var selectedSongs = [];
+      var checkboxes = document.getElementsByName("selectedSongs");
+
+      checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+          selectedSongs.push(checkbox.value);
+        }
+      });
+
+      console.log(selectedSongs)
+      sendToServer(selectedSongs)
+    }
+
+    function sendToServer(selectedSongs) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/save-songs", true);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      
+      // Convert the array to JSON and send it in the request body
+      xhr.send(JSON.stringify({ selectedSongs: selectedSongs }));
+    }
+  </script>
+
+</body>
+</html>

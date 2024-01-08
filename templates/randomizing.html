@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random String Picker</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    h1 {
+      color: #1DB954;
+    }
+
+    button {
+      background-color: #1DB954;
+      color: #ffffff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #17A845;
+    }
+
+    .confirmation-button {
+      background-color: #ff0000;
+      color: #ffffff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .confirmation-button:hover {
+      background-color: #cc0000;
+    }
+
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Random Genre Selector</h1>
+
+  <p>Randomly Selected Genre: {{.}}</p>
+  <button onclick="randomize()">Randomize Again</button>
+
+  <button class="confirmation-button" onclick="confirmMessage()">Confirm Randomize</button>
+
+  <script>
+    function randomize() {
+      location.reload();
+    }
+
+    function confirmMessage() {
+      const selectedGenre = "{{.}}";
+      window.location.href = `display-songs?genre=${selectedGenre}`;
+   }
+  </script>
+
+</body>
+</html>
